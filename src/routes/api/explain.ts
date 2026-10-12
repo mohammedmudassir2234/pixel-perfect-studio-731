@@ -32,10 +32,11 @@ export const Route = createFileRoute("/api/explain")({
         const system = `You are an expert software engineer helping contributors understand open-source repositories.
 Rules: base every claim on the provided files. Cite evidence inline as \`path/to/file\`. If something is not visible in the provided context, say so explicitly under a final "## Uncertainty" section. Never invent files. Use concise Markdown with headings.`;
 
+        const key = process.env["LOVABLE_API_KEY"] ?? "";
         const openai = createOpenAI({
           baseURL: "https://ai.gateway.lovable.dev/v1",
-          apiKey: process.env.LOVABLE_API_KEY,
-          headers: { "Lovable-API-Key": process.env.LOVABLE_API_KEY ?? "", "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
+          apiKey: key,
+          headers: { "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
         });
         const result = streamText({
           model: openai.responses("openai/gpt-6-astra"),
